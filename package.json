@@ -7,6 +7,8 @@
     "@adminjs/express": "^4.0.3",
     "@adminjs/mongoose": "^2.0.2",
     "adminjs": "^5.7.2",
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-formidable": "^1.2.0",

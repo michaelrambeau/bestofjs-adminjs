@@ -2,10 +2,11 @@ const AdminJS = require("adminjs");
 const AdminJSExpress = require("@adminjs/express");
 const express = require("express");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const AdminJSMongoose = require("@adminjs/mongoose");
 require("dotenv").config();
 
-const { Project } = require("./models");
+const { Project, Tag, User } = require("./models");
 
 const mongoURI = process.env.MONGO_URI_PRODUCTION;
 const app = express();
@@ -38,9 +39,24 @@ const run = async () => {
           },
         },
       },
+      { resource: Tag },
+      User,
     ],
   });
-  const router = AdminJSExpress.buildRouter(admin);
+  const router = AdminJSExpress.buildAuthenticatedRouter(admin, {
+    authenticate: async (email, password) => {
+      const user = await User.findOne({ email });
+      if (user) {
+        const matched = await bcrypt.compare(password, user.password);
+        console.log(user, matched);
+        if (matched) {
+          return user;
+        }
+      }
+      return false;
+    },
+    cookiePassword: "supersecret!",
+  });
   app.use(admin.options.rootPath, router);
   const port = 2022;
   app.listen(port, () =>
