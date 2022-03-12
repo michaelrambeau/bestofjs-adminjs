@@ -1,0 +1,23 @@
+{
+  "name": "bestofjs-adminjs",
+  "version": "0.0.1",
+  "description": "Admin client for Best of JS data",
+  "main": "index.js",
+  "dependencies": {
+    "@adminjs/express": "^4.0.3",
+    "@adminjs/mongoose": "^2.0.2",
+    "adminjs": "^5.7.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.2",
+    "mongoose": "^6.2.3",
+    "tslib": "^2.3.1"
+  },
+  "scripts": {
+    "start": "node ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "michaelrambeau",
+  "license": "MIT"
+}
