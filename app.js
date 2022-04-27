@@ -27,6 +27,25 @@ const run = async () => {
       {
         resource: Project,
         options: {
+          listProperties: [
+            "name",
+            "npm.name",
+            "tags",
+            "disabled",
+            "deprecated",
+            "createdAt",
+          ],
+          sort: {
+            sortBy: "createdAt",
+            direction: "desc",
+          },
+          properties: {
+            tags: {
+              components: {
+                list: AdminJS.bundle("./components/tag-list"),
+              },
+            },
+          },
           actions: {
             show: {
               // change the behavior of show action
@@ -39,16 +58,26 @@ const run = async () => {
           },
         },
       },
-      { resource: Tag },
+      // {
+      //   resource: Tag,
+      //   options: {
+      //     properties: {
+      //       name: {
+      //         isTitle: true,
+      //       },
+      //     },
+      //   },
+      // },
       User,
     ],
   });
-  const router = AdminJSExpress.buildAuthenticatedRouter(admin, {
+  const basicRouter = AdminJSExpress.buildRouter(admin);
+  const authRouter = AdminJSExpress.buildAuthenticatedRouter(admin, {
     authenticate: async (email, password) => {
+      return true;
       const user = await User.findOne({ email });
       if (user) {
         const matched = await bcrypt.compare(password, user.password);
-        console.log(user, matched);
         if (matched) {
           return user;
         }
@@ -57,7 +86,7 @@ const run = async () => {
     },
     cookiePassword: "supersecret!",
   });
-  app.use(admin.options.rootPath, router);
+  app.use(admin.options.rootPath, basicRouter);
   const port = 2022;
   app.listen(port, () =>
     console.log(`AdminJS is under http://localhost:${port}/admin`)

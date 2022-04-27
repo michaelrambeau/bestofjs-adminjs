@@ -11,7 +11,7 @@ const fields = {
   repository: String,
   tags: [
     {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.ObjectId,
       ref: "Tag",
     },
   ],
