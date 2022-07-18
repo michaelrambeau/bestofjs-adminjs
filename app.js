@@ -6,14 +6,19 @@ const bcrypt = require("bcrypt");
 const AdminJSMongoose = require("@adminjs/mongoose");
 require("dotenv").config();
 
-const { Project, Tag, User } = require("./models");
+const { Project, User } = require("./models");
 
+const defaultPort = 2022;
+const port = process.env.PORT || defaultPort;
 const mongoURI = process.env.MONGO_URI_PRODUCTION;
+const skipAuth = process.env.SKIP_AUTH === "1";
+const cookiePassword = process.env.COOKIE_PASSWORD;
+
 const app = express();
 
 AdminJS.registerAdapter(AdminJSMongoose);
 
-const run = async () => {
+async function main() {
   if (!mongoURI) throw new Error(`No Mongo DB URI setup!`);
   console.log("Connecting", mongoURI.slice(0, 30));
   const connection = await mongoose.connect(mongoURI);
@@ -58,23 +63,12 @@ const run = async () => {
           },
         },
       },
-      // {
-      //   resource: Tag,
-      //   options: {
-      //     properties: {
-      //       name: {
-      //         isTitle: true,
-      //       },
-      //     },
-      //   },
-      // },
       User,
     ],
   });
   const basicRouter = AdminJSExpress.buildRouter(admin);
   const authRouter = AdminJSExpress.buildAuthenticatedRouter(admin, {
     authenticate: async (email, password) => {
-      return true;
       const user = await User.findOne({ email });
       if (user) {
         const matched = await bcrypt.compare(password, user.password);
@@ -84,12 +78,18 @@ const run = async () => {
       }
       return false;
     },
-    cookiePassword: "supersecret!",
+    cookiePassword,
   });
-  app.use(admin.options.rootPath, basicRouter);
-  const port = 2022;
+
+  const router = skipAuth ? basicRouter : authRouter;
+  app.use(admin.options.rootPath, router);
+
   app.listen(port, () =>
-    console.log(`AdminJS is under http://localhost:${port}/admin`)
+    console.log(
+      `AdminJS is under http://localhost:${port}/admin`,
+      skipAuth ? "[No authentication mode]" : "[normal mode]"
+    )
   );
-};
-run();
+}
+
+main();

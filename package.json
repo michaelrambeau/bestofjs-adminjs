@@ -4,9 +4,9 @@
   "description": "Admin client for Best of JS data",
   "main": "index.js",
   "dependencies": {
-    "@adminjs/express": "^4.0.3",
-    "@adminjs/mongoose": "^2.0.2",
-    "adminjs": "^5.7.2",
+    "@adminjs/express": "^5.0.0",
+    "@adminjs/mongoose": "^3.0.0",
+    "adminjs": "^6.0.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",

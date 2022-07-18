@@ -33,7 +33,6 @@ const fields = {
     pushed_at: Date,
     last_commit: Date,
     branch: String,
-    packageJson: Boolean,
     owner_id: Number,
     topics: Array,
     commit_count: Number,
