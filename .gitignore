@@ -1,5 +1,6 @@
 .env
 node_modules
+.adminjs
 *.log
 /build
 .DS_Store

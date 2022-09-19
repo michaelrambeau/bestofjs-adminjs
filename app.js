@@ -1,9 +1,9 @@
-const AdminJS = require("adminjs");
 const AdminJSExpress = require("@adminjs/express");
+const AdminJSMongoose = require("@adminjs/mongoose");
+const AdminJS = require("adminjs");
+const bcrypt = require("bcrypt");
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const AdminJSMongoose = require("@adminjs/mongoose");
 require("dotenv").config();
 
 const { Project, User } = require("./models");
