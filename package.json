@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Admin client for Best of JS data",
   "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node dist/app.js",
+    "build": "rm -rf dist && tsc",
+    "build:watch": "rm -rf dist && tsc -w"
+  },
   "dependencies": {
     "@adminjs/express": "^5.0.0",
     "@adminjs/mongoose": "^3.0.0",
@@ -14,12 +20,12 @@
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
     "mongoose": "^6.6.1",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.3"
   },
-  "scripts": {
-    "start": "node ./app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   },
-  "author": "michaelrambeau",
-  "license": "MIT"
+  "author": "Michael Rambeau",
+  "license": "MIT",
 }

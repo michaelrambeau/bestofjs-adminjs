@@ -1,18 +1,24 @@
-const AdminJSExpress = require("@adminjs/express");
-const AdminJSMongoose = require("@adminjs/mongoose");
-const AdminJS = require("adminjs");
-const bcrypt = require("bcrypt");
-const express = require("express");
-const mongoose = require("mongoose");
-require("dotenv").config();
+import AdminJSExpress from "@adminjs/express";
+import AdminJSMongoose from "@adminjs/mongoose";
+import AdminJS from "adminjs";
+import bcrypt from "bcrypt";
+import express from "express";
+import mongoose from "mongoose";
+import dotEnv from "dotenv";
+dotEnv.config();
 
-const { Project, User } = require("./models");
+import { ProjectModel } from "./models/Project";
+import { UserModel } from "./models/UserModel";
+import { TagModel } from "./models/TagModel";
 
 const defaultPort = 2022;
 const port = process.env.PORT || defaultPort;
 const mongoURI = process.env.MONGO_URI_PRODUCTION;
 const skipAuth = process.env.SKIP_AUTH === "1";
 const cookiePassword = process.env.COOKIE_PASSWORD;
+
+if (!mongoURI) throw new Error("No `MONGO_URI`")
+if (!cookiePassword) throw new Error("No `COOKIE_PASSWORD`")
 
 const app = express();
 
@@ -30,7 +36,7 @@ async function main() {
     },
     resources: [
       {
-        resource: Project,
+        resource: ProjectModel,
         options: {
           listProperties: [
             "name",
@@ -63,13 +69,14 @@ async function main() {
           },
         },
       },
-      User,
+      UserModel,
+      TagModel,
     ],
   });
   const basicRouter = AdminJSExpress.buildRouter(admin);
   const authRouter = AdminJSExpress.buildAuthenticatedRouter(admin, {
     authenticate: async (email, password) => {
-      const user = await User.findOne({ email });
+      const user = await UserModel.findOne({ email });
       if (user) {
         const matched = await bcrypt.compare(password, user.password);
         if (matched) {
@@ -78,7 +85,7 @@ async function main() {
       }
       return false;
     },
-    cookiePassword,
+    cookiePassword: cookiePassword as string,
   });
 
   const router = skipAuth ? basicRouter : authRouter;

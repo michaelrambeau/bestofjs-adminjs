@@ -1,6 +1,7 @@
 .env
 node_modules
 .adminjs
+dist
 *.log
 /build
 .DS_Store

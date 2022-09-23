@@ -1,29 +1,75 @@
-const mongoose = require("mongoose");
+import { model, Schema, Types } from "mongoose";
 // const isAbsoluteURL = require("is-absolute-url");
 // const isURL = require("validator/lib/isURL");
 
+export type Project = {
+  name: string;
+  url: string;
+  override_url: boolean;
+  description: string;
+  override_description: boolean;
+  repository: string;
+  tags: Types.ObjectId[];
+  createdAt: Date;
+  github: {
+    name: string,
+    full_name: string,
+    description: string,
+    homepage: string,
+    stargazers_count: number,
+    pushed_at: Date,
+    last_commit: Date,
+    branch: string,
+    owner_id: number,
+    topics: string[],
+    commit_count: number,
+    contributor_count: number,
+    created_at: Date,
+    archived: boolean,
+    updatedAt: Date,
+  }
+  npm: {
+    name: string,
+    version: string,
+    dependencies: string[],
+    deprecated: boolean,
+  }
+  downloads: {
+    monthly: number,
+  },
+  bundle: {
+    name: string,
+    dependencyCount: number,
+    gzip: number,
+    size: number,
+    version: string,
+    errorMessage: string,
+  },
+  packageSize: {
+    name: string,
+    installSize: number,
+    publishSize: number,
+    version: string,
+    errorMessage: string,
+  },
+};
+
 const fields = {
   name: String,
-  url: String,
-  override_url: Boolean,
   description: String,
   override_description: Boolean,
   repository: String,
+  url: String,
+  override_url: Boolean,
   tags: [
     {
-      type: mongoose.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Tag",
     },
   ],
-  createdAt: {
-    type: Date,
-  },
-  disabled: {
-    type: Boolean,
-  },
-  deprecated: {
-    type: Boolean,
-  },
+  createdAt: { type: "Date", default: Date.now() },
+  disabled: { type: Boolean },
+  deprecated: { type: Boolean },
   github: {
     name: String,
     full_name: String,
@@ -42,10 +88,10 @@ const fields = {
     updatedAt: Date,
   },
   npm: {
-    name: String,
-    version: String,
+    name: {type: "String"},
+    version: {type: "String"},
     dependencies: [String],
-    deprecated: Boolean,
+    deprecated: {type: "Boolean"},
   },
   downloads: {
     monthly: Number,
@@ -65,33 +111,14 @@ const fields = {
     version: String,
     errorMessage: String,
   },
-  packagequality: {
-    quality: Number,
-  },
-  npms: {
-    score: {
-      detail: {
-        maintenance: Number,
-        popularity: Number,
-        quality: Number,
-      },
-      final: Number,
-    },
-  },
   icon: {
     url: String,
   },
-  colors: {
-    vibrant: String,
-  },
-  trends: Object,
   twitter: String,
-  aliases: [String],
-};
+  aliases: [String],  
+} as const;
 
-const schema = new mongoose.Schema(fields, {
-  collection: "projects",
-});
+const schema = new Schema<Project>(fields, { collection: "projects" });
 
 schema.methods.toString = function () {
   return `${this.github.full_name} ${this._id}`;
@@ -113,12 +140,11 @@ schema.methods.getDescription = function () {
 //   return homepage && isValidProjectURL(homepage) ? homepage : this.url;
 // };
 
-const model = mongoose.model("Project", schema);
-const collection = model.collection;
+export const ProjectModel = model<Project>("Project", schema);
+
+const collection = ProjectModel.collection;
 collection.createIndex({ "github.full_name": 1 });
 collection.createIndex({ "github.name": 1 });
-
-module.exports = model;
 
 // function isValidProjectURL(url) {
 //   if (!isURL(url)) {
