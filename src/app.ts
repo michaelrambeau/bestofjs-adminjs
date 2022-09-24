@@ -7,9 +7,9 @@ import mongoose from "mongoose";
 import dotEnv from "dotenv";
 dotEnv.config();
 
-import { ProjectModel } from "./models/Project";
-import { UserModel } from "./models/UserModel";
-import { TagModel } from "./models/TagModel";
+import { ProjectModel } from "./models/project-model";
+import { UserModel } from "./models/user-model";
+import { TagModel } from "./models/tag-model";
 
 const defaultPort = 2022;
 const port = process.env.PORT || defaultPort;
@@ -40,6 +40,7 @@ async function main() {
         options: {
           listProperties: [
             "name",
+            "github.stargazers_count",
             "npm.name",
             "tags",
             "disabled",

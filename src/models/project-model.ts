@@ -12,59 +12,60 @@ export type Project = {
   tags: Types.ObjectId[];
   createdAt: Date;
   github: {
-    name: string,
-    full_name: string,
-    description: string,
-    homepage: string,
-    stargazers_count: number,
-    pushed_at: Date,
-    last_commit: Date,
-    branch: string,
-    owner_id: number,
-    topics: string[],
-    commit_count: number,
-    contributor_count: number,
-    created_at: Date,
-    archived: boolean,
-    updatedAt: Date,
-  }
+    name: string;
+    full_name: string;
+    description: string;
+    homepage: string;
+    stargazers_count: number;
+    pushed_at: Date;
+    last_commit: Date;
+    branch: string;
+    owner_id: number;
+    topics: string[];
+    commit_count: number;
+    contributor_count: number;
+    created_at: Date;
+    archived: boolean;
+    updatedAt: Date;
+  };
   npm: {
-    name: string,
-    version: string,
-    dependencies: string[],
-    deprecated: boolean,
-  }
+    name: string;
+    version: string;
+    dependencies: string[];
+    deprecated: boolean;
+  };
   downloads: {
-    monthly: number,
-  },
+    monthly: number;
+  };
   bundle: {
-    name: string,
-    dependencyCount: number,
-    gzip: number,
-    size: number,
-    version: string,
-    errorMessage: string,
-  },
+    name: string;
+    dependencyCount: number;
+    gzip: number;
+    size: number;
+    version: string;
+    errorMessage: string;
+  };
   packageSize: {
-    name: string,
-    installSize: number,
-    publishSize: number,
-    version: string,
-    errorMessage: string,
-  },
+    name: string;
+    installSize: number;
+    publishSize: number;
+    version: string;
+    errorMessage: string;
+  };
 };
 
 const fields = {
-  name: String,
+  name: { type: Schema.Types.String, required: true, unique: true },
   description: String,
   override_description: Boolean,
-  repository: String,
+  repository: { type: Schema.Types.String, required: true, unique: true },
   url: String,
   override_url: Boolean,
   tags: [
     {
       type: Schema.Types.ObjectId,
       ref: "Tag",
+      required: true,
     },
   ],
   createdAt: { type: "Date", default: Date.now() },
@@ -72,7 +73,7 @@ const fields = {
   deprecated: { type: Boolean },
   github: {
     name: String,
-    full_name: String,
+    full_name: { type: String, required: true, unique: true },
     description: String,
     homepage: String,
     stargazers_count: Number,
@@ -88,10 +89,10 @@ const fields = {
     updatedAt: Date,
   },
   npm: {
-    name: {type: "String"},
-    version: {type: "String"},
+    name: { type: "String" },
+    version: { type: "String" },
     dependencies: [String],
-    deprecated: {type: "Boolean"},
+    deprecated: { type: "Boolean" },
   },
   downloads: {
     monthly: Number,
@@ -115,7 +116,7 @@ const fields = {
     url: String,
   },
   twitter: String,
-  aliases: [String],  
+  aliases: [String],
 } as const;
 
 const schema = new Schema<Project>(fields, { collection: "projects" });
@@ -143,8 +144,8 @@ schema.methods.getDescription = function () {
 export const ProjectModel = model<Project>("Project", schema);
 
 const collection = ProjectModel.collection;
-collection.createIndex({ "github.full_name": 1 });
-collection.createIndex({ "github.name": 1 });
+// collection.createIndex({ "github.full_name": 1 });
+// collection.createIndex({ "github.name": 1 });
 
 // function isValidProjectURL(url) {
 //   if (!isURL(url)) {
