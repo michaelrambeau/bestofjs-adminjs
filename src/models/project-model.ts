@@ -52,6 +52,7 @@ export type Project = {
     version: string;
     errorMessage: string;
   };
+  logo: string;
 };
 
 const fields = {
@@ -69,11 +70,11 @@ const fields = {
     },
   ],
   createdAt: { type: "Date", default: Date.now() },
-  disabled: { type: Boolean },
-  deprecated: { type: Boolean },
+  disabled: { type: Boolean, default: false },
+  deprecated: { type: Boolean, default: false },
   github: {
     name: String,
-    full_name: { type: String, required: true, unique: true },
+    full_name: String,
     description: String,
     homepage: String,
     stargazers_count: Number,
@@ -112,9 +113,7 @@ const fields = {
     version: String,
     errorMessage: String,
   },
-  icon: {
-    url: String,
-  },
+  logo: String,
   twitter: String,
   aliases: [String],
 } as const;
@@ -143,9 +142,6 @@ schema.methods.getDescription = function () {
 
 export const ProjectModel = model<Project>("Project", schema);
 
-const collection = ProjectModel.collection;
-// collection.createIndex({ "github.full_name": 1 });
-// collection.createIndex({ "github.name": 1 });
 
 // function isValidProjectURL(url) {
 //   if (!isURL(url)) {
