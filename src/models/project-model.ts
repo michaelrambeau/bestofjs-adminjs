@@ -69,7 +69,7 @@ const fields = {
       required: true,
     },
   ],
-  createdAt: { type: "Date", default: Date.now() },
+  createdAt: { type: "Date", default: () => Date.now() },
   disabled: { type: Boolean, default: false },
   deprecated: { type: Boolean, default: false },
   github: {
@@ -141,7 +141,6 @@ schema.methods.getDescription = function () {
 // };
 
 export const ProjectModel = model<Project>("Project", schema);
-
 
 // function isValidProjectURL(url) {
 //   if (!isURL(url)) {

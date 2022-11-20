@@ -31,7 +31,7 @@ const fields = {
   name: { type: types.String, required: true },
   code: { type: types.String, required: true },
   description: { type: types.String },
-  createdAt: { type: types.Date, default: Date.now() },
+  createdAt: { type: types.Date, default: () => Date.now() },
 } as const;
 
 export const TagSchema = new Schema<Tag>(fields, {collection: "tags"});
