@@ -53,6 +53,7 @@ export type Project = {
     errorMessage: string;
   };
   logo: string;
+  comments: string;
 };
 
 const fields = {
@@ -116,6 +117,7 @@ const fields = {
   logo: String,
   twitter: String,
   aliases: [String],
+  comments: String
 } as const;
 
 const schema = new Schema<Project>(fields, { collection: "projects" });
