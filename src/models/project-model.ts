@@ -54,6 +54,7 @@ export type Project = {
   };
   logo: string;
   comments: string;
+  status: "active" | "featured" | "promoted" | "deprecated";
 };
 
 const fields = {
@@ -71,6 +72,11 @@ const fields = {
     },
   ],
   createdAt: { type: "Date", default: () => Date.now() },
+  status: {
+    type: "String",
+    default: "active",
+    enum: ["active", "featured", "promoted", "deprecated"],
+  },
   disabled: { type: Boolean, default: false },
   deprecated: { type: Boolean, default: false },
   github: {
@@ -117,7 +123,7 @@ const fields = {
   logo: String,
   twitter: String,
   aliases: [String],
-  comments: String
+  comments: String,
 } as const;
 
 const schema = new Schema<Project>(fields, { collection: "projects" });
