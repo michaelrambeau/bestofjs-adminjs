@@ -10,6 +10,7 @@ dotEnv.config();
 import { ProjectModel } from "./models/project-model";
 import { UserModel } from "./models/user-model";
 import { TagModel } from "./models/tag-model";
+import { HeroModel } from "./models/hero-model";
 
 const defaultPort = 2022;
 const port = process.env.PORT || defaultPort;
@@ -72,6 +73,7 @@ async function main() {
       },
       UserModel,
       TagModel,
+      HeroModel,
     ],
   });
   const basicRouter = AdminJSExpress.buildRouter(admin);
