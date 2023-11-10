@@ -1,5 +1,6 @@
 {
   "name": "bestofjs-adminjs",
+  "type": "module",
   "version": "0.0.1",
   "description": "Admin client for Best of JS data",
   "main": "index.js",
@@ -10,16 +11,16 @@
     "build:watch": "rm -rf dist && tsc -w"
   },
   "dependencies": {
-    "@adminjs/express": "^5.0.0",
-    "@adminjs/mongoose": "^3.0.0",
-    "adminjs": "^6.2.3",
+    "@adminjs/express": "^6.0.1",
+    "@adminjs/mongoose": "^4.0.0",
+    "adminjs": "^7.3.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
-    "mongoose": "^6.6.1",
+    "mongoose": "^7",
     "tslib": "^2.4.0",
     "typescript": "^4.8.3"
   },

@@ -1,5 +1,5 @@
 import AdminJSExpress from "@adminjs/express";
-import AdminJSMongoose from "@adminjs/mongoose";
+import * as AdminJSMongoose from "@adminjs/mongoose";
 import AdminJS from "adminjs";
 import bcrypt from "bcrypt";
 import express from "express";
@@ -7,10 +7,10 @@ import mongoose from "mongoose";
 import dotEnv from "dotenv";
 dotEnv.config();
 
-import { ProjectModel } from "./models/project-model";
-import { UserModel } from "./models/user-model";
-import { TagModel } from "./models/tag-model";
-import { HeroModel } from "./models/hero-model";
+import { ProjectModel } from "./models/project-model.js";
+import { UserModel } from "./models/user-model.js";
+import { TagModel } from "./models/tag-model.js";
+import { HeroModel } from "./models/hero-model.js";
 
 const defaultPort = 2022;
 const port = process.env.PORT || defaultPort;
@@ -55,7 +55,7 @@ async function main() {
           properties: {
             tags: {
               components: {
-                list: AdminJS.bundle("./components/tag-list"),
+                // list: AdminJS.bundle("./components/tag-list"),
               },
             },
           },
