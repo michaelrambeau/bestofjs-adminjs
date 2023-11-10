@@ -1,6 +1,6 @@
+import AdminJS, { ComponentLoader } from "adminjs";
 import AdminJSExpress from "@adminjs/express";
 import * as AdminJSMongoose from "@adminjs/mongoose";
-import AdminJS from "adminjs";
 import bcrypt from "bcrypt";
 import express from "express";
 import mongoose from "mongoose";
@@ -11,6 +11,8 @@ import { ProjectModel } from "./models/project-model.js";
 import { UserModel } from "./models/user-model.js";
 import { TagModel } from "./models/tag-model.js";
 import { HeroModel } from "./models/hero-model.js";
+
+const componentLoader = new ComponentLoader()
 
 const defaultPort = 2022;
 const port = process.env.PORT || defaultPort;
@@ -25,12 +27,15 @@ const app = express();
 
 AdminJS.registerAdapter(AdminJSMongoose);
 
+const TagList = componentLoader.add('TagList', './components/tag-list')
+
 async function main() {
   if (!mongoURI) throw new Error(`No Mongo DB URI setup!`);
   console.log("Connecting", mongoURI.slice(0, 30));
   const connection = await mongoose.connect(mongoURI);
   const admin = new AdminJS({
     databases: [connection],
+    componentLoader,
     rootPath: "/admin",
     branding: {
       companyName: "Best of JS Admin",
@@ -55,7 +60,7 @@ async function main() {
           properties: {
             tags: {
               components: {
-                // list: AdminJS.bundle("./components/tag-list"),
+                list: TagList,
               },
             },
           },
