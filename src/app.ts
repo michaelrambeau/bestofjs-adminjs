@@ -12,7 +12,7 @@ import { UserModel } from "./models/user-model.js";
 import { TagModel } from "./models/tag-model.js";
 import { HeroModel } from "./models/hero-model.js";
 
-const componentLoader = new ComponentLoader()
+const componentLoader = new ComponentLoader();
 
 const defaultPort = 2022;
 const port = process.env.PORT || defaultPort;
@@ -20,14 +20,14 @@ const mongoURI = process.env.MONGO_URI_PRODUCTION;
 const skipAuth = process.env.SKIP_AUTH === "1";
 const cookiePassword = process.env.COOKIE_PASSWORD;
 
-if (!mongoURI) throw new Error("No `MONGO_URI`")
-if (!cookiePassword) throw new Error("No `COOKIE_PASSWORD`")
+if (!mongoURI) throw new Error("No `MONGO_URI`");
+if (!cookiePassword) throw new Error("No `COOKIE_PASSWORD`");
 
 const app = express();
 
 AdminJS.registerAdapter(AdminJSMongoose);
 
-const TagList = componentLoader.add('TagList', './components/tag-list')
+const TagList = componentLoader.add("TagList", "./components/tag-list");
 
 async function main() {
   if (!mongoURI) throw new Error(`No Mongo DB URI setup!`);
@@ -78,7 +78,22 @@ async function main() {
       },
       UserModel,
       TagModel,
-      HeroModel,
+      {
+        resource: HeroModel,
+        options: {
+          listProperties: [
+            "github.login",
+            "name",
+            "github.name",
+            "github.followers",
+            "createdAt",
+          ],
+          sort: {
+            sortBy: "createdAt",
+            direction: "desc",
+          },
+        },
+      },
     ],
   });
   const basicRouter = AdminJSExpress.buildRouter(admin);

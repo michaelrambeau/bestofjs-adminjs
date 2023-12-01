@@ -2,9 +2,10 @@ import { model, Schema, Types } from "mongoose";
 const types = Schema.Types;
 
 export interface Hero {
+  name: { type: String };
   createdAt: { type: Date };
   github: {
-    login: string;
+    login: { type: string; required: true };
     name: string;
     avatar_url: string;
     blog: string;
@@ -16,6 +17,7 @@ export interface Hero {
 }
 
 const fields = {
+  name: { type: types.String }, // used to override the GitHub name (`mrdoob` has no name!)
   github: {
     login: { type: types.String, required: true },
     name: types.String,
