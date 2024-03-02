@@ -3,9 +3,14 @@ import { unflatten } from "flat";
 import { Box, Link } from "@adminjs/design-system";
 import { Link as RouterLink } from "react-router-dom";
 
-const TagList = (props) => {
-  // console.log(props.record.populated);
-  // console.log(unflatten(props.record.populated));
+interface TagListProps {
+  record: {
+    populated: { tags: { [key: string]: unknown } };
+  };
+}
+
+const TagList = (props: TagListProps) => {
+  // @ts-ignore
   const { tags } = unflatten(props.record.populated);
   return (
     <Box display="flex" flexWrap="wrap" margin={-3}>
